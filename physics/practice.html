@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="物理基礎・物理の範囲別演習、採点、解説、弱点分析。"><title>高校物理｜演習ラボ</title>
+<style>
+:root{color-scheme:dark;--bg:#071426;--panel:#10233d;--line:#294563;--txt:#edf5ff;--muted:#c3d5e9;--accent:#7bdcff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#14345a 0,transparent 48%),var(--bg);color:var(--txt);font:16px/1.7 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:20px}a{color:var(--accent)}.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:15px 0}.muted{color:var(--muted)}.pill{display:inline-block;padding:4px 10px;border-radius:99px;background:#203c5d;color:#c9eaff;font-size:.85rem}button,select{font:inherit;border-radius:10px;padding:11px 14px;border:1px solid #438bb0;background:#17658b;color:white;cursor:pointer;min-height:44px}button:disabled{opacity:.55;cursor:not-allowed}.choice{display:block;width:100%;text-align:left;margin:10px 0;background:#091a2e;border:1px solid #355575;color:var(--txt)}.choice.selected{border:2px solid var(--accent);background:#173654}.choice.correct{border:2px solid #5bd6a3}.choice.wrong{border:2px solid #ff9b9b}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.progress{height:8px;background:#263d58;border-radius:9px;overflow:hidden}.progress span{display:block;height:100%;background:var(--accent);width:0}.explain{border-left:3px solid var(--accent);padding:10px 14px;background:#091a2e;border-radius:8px}.hidden{display:none!important}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:3px}@media(max-width:600px){main{padding:12px}.panel{padding:14px}.row{flex-direction:column}}
+</style></head><body><main><div class="top"><a href="./index.html">← 科目・範囲選択へ戻る</a><span class="pill">オリジナル問題</span></div><h1 id="title">高校物理 演習ラボ</h1><p id="selected" class="muted"></p>
+<section class="panel" id="setup"><h2>演習設定</h2><label for="mode">学習方法</label><br><select id="mode"><option value="basic">基本問題</option><option value="truefalse">公式の正誤問題</option><option value="common">共通テスト型演習</option><option value="mock">模擬テスト・弱点分析</option></select><p id="modeInfo" class="muted"></p><button id="start">演習を開始</button></section>
+<section class="panel hidden" id="quiz" aria-live="polite"><div class="top"><span id="counter" class="pill"></span><span id="scoreLive" class="muted"></span></div><div class="progress"><span id="bar"></span></div><h2 id="question"></h2><div id="choices"></div><div id="feedback" class="explain hidden" role="status" aria-live="polite"></div><div class="row" style="margin-top:16px"><button id="check">解答する</button><button id="next" disabled>次の問題 →</button></div></section>
+<section class="panel hidden" id="result"><h2>結果・弱点分析</h2><p id="summary"></p><p id="analysis" class="muted"></p><h3>間違えた問題・解説</h3><div id="missed"></div><div class="row"><button id="review">間違えた問題を復習</button><button id="again">もう一度挑戦</button></div></section>
+</main><script>
+const p=new URLSearchParams(location.search),subject=p.get("subject")||"基礎",units=(p.get("units")||"").split(",").filter(Boolean),initialMode=p.get("mode")||"basic";
+const labels={quantities:"物理量・単位",motion:"運動の表し方",forces:"力と運動",energy:"仕事とエネルギー",heat:"熱とエネルギー",science:"物理学と社会",motion2:"平面運動・相対運動",rigid:"剛体のつり合い",momentum:"運動量と衝突",oscillation:"円運動・単振動",gravity:"万有引力",thermo:"熱力学",waves:"波",optics:"光",electricity:"電気",electricfield:"電場・電位",magnetism:"磁場・電磁誘導",ac:"交流",atomic:"原子・量子"};
+const BANK=[
+["quantities","速さの単位 m/s が表す量は？",["時間÷距離","距離÷時間","質量×加速度","力÷面積"],1,"速さは単位時間あたりに進む距離。"],
+["motion","静止していた物体が一定の加速度2 m/s²で3秒運動した。速度は？",["2 m/s","3 m/s","6 m/s","9 m/s"],2,"v=v₀+at。初速0なのでv=2×3=6 m/s。"],
+["motion","速度と時間のグラフで、グラフと時間軸で囲まれた面積が表す量は？",["加速度","変位","質量","力"],1,"速度を時間で積み重ねた面積は変位を表す。"],
+["forces","質量2 kgの物体に合力6 Nがはたらく。加速度は？",["2 m/s²","3 m/s²","4 m/s²","12 m/s²"],1,"運動方程式F=maよりa=F/m=6/2=3 m/s²。"],
+["forces","物体にはたらく力がつり合っているとき、必ず正しいのは？",["速度が必ず0","加速度が0","物体が静止している","力が1つだけ"],1,"合力が0なので加速度は0。速度が一定で動いている場合もある。"],
+["energy","質量2 kg、速さ3 m/sの物体の運動エネルギーは？",["3 J","6 J","9 J","18 J"],2,"K=½mv²=½×2×3²=9 J。"],
+["energy","力と移動方向が同じで、力10 Nで3 m動かした。仕事は？",["3 J","10 J","13 J","30 J"],3,"W=Fs=10×3=30 J。"],
+["heat","熱量を求める式として正しいものは？",["Q=mcΔT","Q=m/c","Q=c/(mΔT)","Q=m+ΔT"],0,"相変化がないとき、Q=mcΔT。mは質量、cは比熱。"],
+["waves","振動数5 Hz、波長2 mの波の速さは？",["2.5 m/s","5 m/s","7 m/s","10 m/s"],3,"v=fλ=5×2=10 m/s。"],
+["waves","波が別の媒質に入るとき、振動数について正しいのは？",["必ず2倍","必ず半分","境界で変わらない","必ず0になる"],2,"波を生み出す振動源の振動数は、媒質が変わっても変わらない。"],
+["electricity","電圧6 V、抵抗3 Ωの抵抗に流れる電流は？",["0.5 A","2 A","3 A","18 A"],1,"オームの法則I=V/R=6/3=2 A。"],
+["electricity","抵抗を直列につないだ回路で正しいのは？",["各抵抗の電流は同じ","各抵抗の電圧は必ず同じ","合成抵抗は必ず最小の抵抗より小さい","電流は流れない"],0,"直列回路では枝分かれがないため、各抵抗に同じ電流が流れる。"],
+["motion2","水平面内で東向き3 m/s、北向き4 m/sの速度を同時にもつ物体の速さは？",["1 m/s","5 m/s","7 m/s","12 m/s"],1,"直交する速度成分なので速さは√(3²+4²)=5 m/s。"],
+["rigid","回転軸からの垂直距離が2倍になり、力が同じなら力のモーメントは？",["半分","同じ","2倍","4倍"],2,"モーメントの大きさはM=Fℓ。腕の長さが2倍なら2倍。"],
+["momentum","質量2 kg、速度3 m/sの物体の運動量の大きさは？",["1.5 kg·m/s","5 kg·m/s","6 kg·m/s","9 kg·m/s"],2,"p=mv=2×3=6 kg·m/s。"],
+["momentum","外力の力積が0の系で保存される量は？",["温度","全運動量","各物体の速度","各物体の運動エネルギー"],1,"外力の合力が0なら、系全体の運動量は保存される。"],
+["oscillation","等速円運動の速さを2倍にし、半径を同じにした。向心加速度は？",["1/4倍","1/2倍","2倍","4倍"],3,"a=v²/rなので、速さ2倍で向心加速度は4倍。"],
+["gravity","2物体間の距離を2倍にすると、万有引力の大きさは？",["2倍","1/2倍","1/4倍","4倍"],2,"万有引力は距離の2乗に反比例するため1/4。"],
+["thermo","理想気体の状態方程式で温度Tに使う単位は？",["℃","K","どちらでも同じ","J"],1,"状態方程式pV=nRTでは絶対温度Kを使う。"],
+["optics","光が屈折するとき、屈折角などの角度は何を基準に測る？",["境界面","法線","光源","レンズの端"],1,"入射角・屈折角は境界面に垂直な法線から測る。"],
+["electricfield","正の電荷が受ける電気力の向きは？",["電場と反対向き","電場と同じ向き","常に右向き","電場に垂直"],1,"電場の向きは正の試験電荷が受ける力の向きとして定義される。"],
+["magnetism","コイルを貫く磁束をより速く変化させると、誘導起電力の大きさはどうなる？",["小さくなる","大きくなる","必ず0","変化しない"],1,"ファラデーの法則より、磁束の時間変化が大きいほど誘導起電力は大きい。"],
+["ac","正弦波交流の最大電圧が100 Vのとき、実効値は約いくら？",["50 V","70.7 V","100 V","141 V"],1,"正弦波では実効値=最大値/√2なので約70.7 V。"],
+["atomic","光子のエネルギーEと振動数fの関係は？",["E=hf","E=h/f","E=f/h","E=h+f"],0,"光子のエネルギーはE=hf。hはプランク定数。"],
+["science","物理実験で測定値を記録するときに大切なことは？",["単位を省略する","都合のよい値だけ記録する","測定値と単位・条件を記録する","予想に合わない値を消す"],2,"再現性や検証のため、値だけでなく単位・測定条件も記録する。"]
+];
+const modes={basic:"基本事項を使って解く問題です。",truefalse:"物理法則や公式の正誤を、条件と一緒に確認します。",common:"実験・グラフ・文章の条件を読み取る問題です。",mock:"選択範囲から出題し、結果と間違いをもとに弱点を振り返ります。"};
+const $=id=>document.getElementById(id);let questions=[],idx=0,answers=[],locked=false;
+$("title").textContent=subject==="物理"?"高校物理 演習ラボ":"物理基礎 演習ラボ";
+$("selected").textContent="科目："+(subject==="物理"?"物理":"物理基礎")+" ／ 選択範囲："+(units.map(u=>labels[u]||u).join("・")||"全範囲");
+$("mode").value=["basic","truefalse","common","mock"].includes(initialMode)?initialMode:"basic";$("modeInfo").textContent=modes[$("mode").value];
+$("mode").addEventListener("change",()=>{$("modeInfo").textContent=modes[$("mode").value]});
+function start(list){let source=list||BANK.filter(q=>!units.length||units.includes(q[0]));if(!source.length){$("selected").textContent+=" ／ この範囲の問題は準備中です。範囲選択へ戻ってください。";return}
+const mode=$("mode").value;if(!list&&mode==="basic")source=source.slice(0,Math.min(8,source.length));if(!list&&mode==="truefalse")source=source.map(q=>[q[0], "【正誤確認】 "+q[1], q[2], q[3], "正しい内容です。"+q[4]]);if(!list&&mode==="common")source=source.filter(q=>/グラフ|実験|媒質|記録|速度成分|磁束|状態方程式/.test(q[1]));if(!source.length)source=(list||BANK.filter(q=>!units.length||units.includes(q[0])));questions=[...source].sort(()=>Math.random()-.5);idx=0;answers=[];locked=false;$("setup").classList.add("hidden");$("result").classList.add("hidden");$("quiz").classList.remove("hidden");render()}
+function render(){locked=false;const q=questions[idx];$("counter").textContent=(idx+1)+" / "+questions.length;$("scoreLive").textContent="回答済み "+answers.length+"問";$("bar").style.width=(idx/questions.length*100)+"%";$("question").textContent=q[1];$("choices").innerHTML="";q[2].forEach((t,i)=>{const b=document.createElement("button");b.className="choice";b.textContent=["A","B","C","D"][i]+"．"+t;b.addEventListener("click",()=>{if(locked)return;answers[idx]={selected:i};[...$("choices").children].forEach(x=>x.classList.remove("selected"));b.classList.add("selected")});$("choices").append(b)});$("feedback").classList.add("hidden");$("feedback").textContent="";$("check").disabled=false;$("next").disabled=true;$("next").textContent=idx===questions.length-1?"結果を見る":"次の問題 →"}
+$("start").addEventListener("click",()=>start());$("check").addEventListener("click",()=>{if(locked)return;if(!answers[idx]){$("feedback").textContent="選択肢を選んでください。";$("feedback").classList.remove("hidden");return}locked=true;const q=questions[idx],a=answers[idx];a.correct=a.selected===q[3];[...$("choices").children].forEach((b,i)=>{b.disabled=true;if(i===q[3])b.classList.add("correct");if(i===a.selected&&i!==q[3])b.classList.add("wrong")});$("feedback").textContent=(a.correct?"正解！":"不正解。正解は"+["A","B","C","D"][q[3]]+"。")+" "+q[4];$("feedback").classList.remove("hidden");$("check").disabled=true;$("next").disabled=false;$("scoreLive").textContent=answers.filter(x=>x&&x.correct).length+"問正解"});
+$("next").addEventListener("click",()=>{if(idx<questions.length-1){idx++;render()}else finish()});
+function finish(){ $("quiz").classList.add("hidden");$("result").classList.remove("hidden");const good=answers.filter(a=>a&&a.correct).length,wrong=questions.map((q,i)=>({q,a:answers[i]})).filter(x=>!x.a||!x.a.correct);$("summary").textContent=good+" / "+questions.length+"問正解（正答率 "+Math.round(good/questions.length*100)+"%）";$("analysis").textContent=wrong.length?wrong.length+"問を復習しましょう。間違いが多い範囲の公式・条件を読み直してから再挑戦してください。":"全問正解！条件や単位も説明できるか確認してみましょう。";$("missed").innerHTML=wrong.length?wrong.map(x=>"<article class='explain' style='margin:10px 0'><strong>"+x.q[1]+"</strong><p>正解："+x.q[2][x.q[3]]+"</p><p>"+x.q[4]+"</p><p class='muted'>範囲："+(labels[x.q[0]]||x.q[0])+"</p></article>").join(""):"間違えた問題はありません。";$("review").disabled=!wrong.length;$("review").onclick=()=>start(wrong.map(x=>x.q));$("again").onclick=()=>{$("setup").classList.remove("hidden");$("result").classList.add("hidden");$("quiz").classList.add("hidden")}}
+$("review").disabled=true;
+</script></body></html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="高校物理の公式・意味・適用条件・例を範囲別に確認。"><title>高校物理｜公式・覚え方</title>
+<style>
+:root{color-scheme:dark;--bg:#071426;--panel:#10233d;--line:#294563;--txt:#edf5ff;--muted:#c3d5e9;--accent:#7bdcff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#14345a 0,transparent 48%),var(--bg);color:var(--txt);font:16px/1.7 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:20px}a{color:var(--accent)}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px;margin:14px 0}.formula{background:#091a2e;border-left:4px solid var(--accent);padding:13px;margin:12px 0;border-radius:8px}.eq{font-size:1.25rem;font-weight:800;overflow-wrap:anywhere}.muted{color:var(--muted)}.pill{display:inline-block;padding:4px 10px;border-radius:99px;background:#203c5d;color:#c9eaff;font-size:.85rem}button{font:inherit;font-weight:800;border-radius:10px;padding:12px 16px;border:1px solid #438bb0;background:#17658b;color:#fff;cursor:pointer;min-height:44px}@media(max-width:600px){main{padding:12px}.panel{padding:14px}}
+</style></head><body><main><a href="./index.html">← 科目・範囲選択へ戻る</a> <span class="pill">閲覧専用</span><h1 id="title">高校物理｜公式・覚え方</h1><p id="desc" class="muted"></p><div id="content"></div><p id="empty" class="panel" hidden>選択した範囲の公式はまだ登録されていません。範囲を選び直してください。</p><p><a href="./index.html">範囲選択へ戻る</a></p></main>
+<script>
+const p=new URLSearchParams(location.search),mode=p.get("mode")==="shortcut"?"shortcut":"formula",units=(p.get("units")||"").split(",").filter(Boolean),subject=p.get("subject")||"基礎";
+const data=[
+["quantities","物理量・単位","速さ","v = Δx / Δt","単位時間あたりの変位（平均の速さは距離÷時間）。","変位と距離を区別する。","60 mを10 sで進む平均の速さは6 m/s。"],
+["quantities","物理量・単位","密度","ρ = m / V","単位体積あたりの質量。","質量m、体積Vを同じ単位系で使う。","質量200 g、体積100 cm³なら密度は2 g/cm³。"],
+["motion","運動の表し方","等速直線運動","x = x₀ + vt","速度一定のときの位置。","正方向を決め、速度の符号に注意する。","初期位置2 m、速度3 m/sなら4秒後は14 m。"],
+["motion","運動の表し方","等加速度運動の速度","v = v₀ + at","一定の加速度aで変化する速度。","加速度が一定。","静止から2 m/s²で3秒加速すると速度は6 m/s。"],
+["motion","運動の表し方","等加速度運動の変位","x − x₀ = v₀t + ½at²","一定加速度での変位。","加速度一定。","静止から2 m/s²で3秒なら変位は9 m。"],
+["forces","力と運動","運動方程式","ΣF = ma","物体にはたらく合力と加速度の関係。","力を向きも含めて合成する。","質量2 kg、合力6 Nなら加速度は3 m/s²。"],
+["forces","力と運動","重力","W = mg","地球が物体を引く力の大きさ。","gは重力加速度。地表付近では約9.8 m/s²。","質量2 kgなら重力は約19.6 N。"],
+["forces","力と運動","ばねの弾性力","F = kx","ばねの伸び・縮みに比例する力の大きさ。","フックの法則が成り立つ範囲。","k=100 N/m、伸び0.05 mなら5 N。"],
+["forces","力と運動","摩擦力の最大値","f ≤ μN","静止摩擦力は最大値を超えず、動摩擦力は条件に応じて扱う。","μは摩擦係数、Nは垂直抗力。","最大静止摩擦力はμN。"],
+["energy","仕事とエネルギー","仕事","W = Fs cos θ","力が物体にした仕事。","Fと変位のなす角をθとする。","同じ向きならW=Fs、垂直なら仕事は0。"],
+["energy","仕事とエネルギー","運動エネルギー","K = ½mv²","運動している物体がもつエネルギー。","速さは2乗で効く。","質量2 kg、速さ3 m/sなら9 J。"],
+["energy","仕事とエネルギー","重力による位置エネルギー","U = mgh","基準面から高さhにある物体の位置エネルギー。","高さの基準面を決める。","1 kgを2 m持ち上げると約19.6 J増加。"],
+["energy","仕事とエネルギー","力学的エネルギー保存","K₁ + U₁ = K₂ + U₂","保存力だけが仕事をする場合、運動と位置エネルギーの和は一定。","摩擦などによる力学的エネルギーの散逸がない。","落下では位置エネルギーが運動エネルギーへ変わる。"],
+["heat","熱とエネルギー","熱量","Q = mcΔT","温度変化に必要な熱量。","相変化がなく、比熱cを一定とみなせる場合。","水0.2 kgを5℃上げる熱量は約4200 J（c=4200）。"],
+["heat","熱力学","理想気体の状態方程式","pV = nRT","理想気体の圧力・体積・物質量・絶対温度の関係。","TはK、Rは気体定数。","温度は摂氏ではなく絶対温度を使う。"],
+["waves","波","波の基本式","v = fλ","波の速さ・振動数・波長の関係。","媒質が変わると速さと波長が変わることがある。","f=5 Hz、λ=2 mならv=10 m/s。"],
+["waves","波","周期と振動数","f = 1 / T","1秒あたりの振動回数。","周期Tは秒で表す。","周期0.25 sなら振動数4 Hz。"],
+["waves","波","屈折の関係","n₁ sin θ₁ = n₂ sin θ₂","境界で光が屈折するときの関係。","角度は境界面ではなく法線から測る。","屈折率が大きい媒質へ入ると法線側に曲がる。"],
+["electricity","電気","電流","I = ΔQ / Δt","単位時間あたりに流れる電荷。","電流の向きは正電荷の移動方向で定義する。","2秒で6 C流れたら3 A。"],
+["electricity","電気","オームの法則","V = RI","抵抗にかかる電圧と電流の関係。","オームの法則が成り立つ導体で使う。","6 Vを3 Ωにかけると2 A。"],
+["electricity","電気","電力","P = VI = I²R = V²/R","電気エネルギーが移る速さ。","同じ回路の電圧・電流・抵抗を使う。","6 V、2 Aなら電力12 W。"],
+["momentum","運動量と衝突","運動量","p = mv","質量と速度の積で定義されるベクトル量。","速度の向きを符号で表す。","質量2 kg、速度3 m/sなら運動量6 kg·m/s。"],
+["momentum","運動量と衝突","力積","J = FΔt = Δp","一定の力が短時間に与える運動量の変化。","力が変化する場合は力の時間積分で考える。","力を大きくするか時間を長くすると力積が大きくなる。"],
+["oscillation","円運動・単振動","等速円運動の向心加速度","a = v²/r = rω²","円の中心向きの加速度。","速度の大きさが一定でも向きが変わる。","速さを2倍にすると向心加速度は4倍。"],
+["oscillation","円運動・単振動","周期と角速度","ω = 2π/T","1周の角度を周期で割った量。","Tは周期。","周期2秒なら角速度はπ rad/s。"],
+["gravity","万有引力","万有引力","F = Gm₁m₂/r²","2物体の間にはたらく引力。","rは物体間の中心距離。","距離が2倍になると力は1/4。"],
+["electricfield","電場・電位","電場","E = F/q","正の試験電荷1 Cあたりにはたらく力。","電場の向きは正電荷が受ける力の向き。","一様電場では電荷の符号で力の向きが変わる。"],
+["electricfield","電場・電位","電位差と仕事","W = qV","電位差Vを通る電荷qに対応するエネルギー。","符号や電場がする仕事との関係に注意。","1 Cが1 Vの電位差を移るエネルギーは1 J。"],
+["magnetism","磁場・電磁誘導","電磁誘導","|ε| = |ΔΦ/Δt|","磁束の変化によって誘導起電力が生じる。","巻数がNなら大きさはN|ΔΦ/Δt|。","磁束を速く変化させるほど誘導起電力は大きい。"],
+["ac","交流","実効値","Vₑff = V₀/√2","正弦波交流の実効電圧。","正弦波交流の場合。","最大値100 Vなら実効値は約70.7 V。"],
+["atomic","原子・量子","光子のエネルギー","E = hf","光子のエネルギーは振動数に比例する。","hはプランク定数。","振動数が2倍なら光子エネルギーも2倍。"],
+["rigid","剛体のつり合い","力のモーメント","M = Fℓ","回転させるはたらきの大きさ。","ℓは回転軸から力の作用線までの垂直距離。","腕の長さを2倍にするとモーメントも2倍。"],
+["optics","光","レンズの公式","1/a + 1/b = 1/f","物体距離a、像距離b、焦点距離fの関係。","距離の符号規約を一貫して使う。","物体距離と焦点距離から像の位置を求める。"]
+];
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+document.getElementById("title").textContent=mode==="shortcut"?"高校物理｜公式の使い分け":"高校物理｜公式・覚え方";
+document.getElementById("desc").textContent=(subject==="物理"?"科目：物理":"科目：物理基礎")+"／選択範囲："+(units.length?units.map(u=>data.find(x=>x[0]===u)?.[1]||u).filter((v,i,a)=>a.indexOf(v)===i).join("・"):"未指定")+"。公式・意味・使う条件・例を確認します。このページでは採点問題は出ません。";
+const list=units.length?data.filter(x=>units.includes(x[0])):data,root=document.getElementById("content"),groups=new Map();
+list.forEach(x=>{if(!groups.has(x[1]))groups.set(x[1],[]);groups.get(x[1]).push(x)});
+if(!list.length)document.getElementById("empty").hidden=false;
+for(const [unit,items] of groups){const sec=document.createElement("section");sec.className="panel";sec.innerHTML="<h2>"+esc(unit)+"</h2>"+items.map(x=>"<article class='formula'><h3>"+esc(x[2])+"</h3><p class='eq'>"+esc(x[3])+"</p><p><b>意味：</b>"+esc(x[4])+"</p><p><b>条件・注意：</b>"+esc(x[5])+"</p><p><b>例：</b>"+esc(x[6])+"</p>"+(mode==="shortcut"?"<p><b>使い分け：</b>問題文の条件・求める量・単位を確認してから式を選びましょう。</p>":"")+"</article>").join("");root.append(sec)}
+</script></body></html>

@@ -1,9 +1,74 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="高校生物・化学・物理・地学をまとめた総合理科の学習サイト。"><title>総合理科｜PASS JUKEN ACADEMY</title>
-<style>:root{color-scheme:dark;--bg:#071426;--panel:#10233d;--line:#294563;--txt:#edf5ff;--muted:#c3d5e9;--accent:#7bdcff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#14345a 0,transparent 48%),var(--bg);color:var(--txt);font:16px/1.65 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:22px}h1{font-size:clamp(2rem,7vw,3.2rem);line-height:1.2}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card{display:block;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:16px;color:var(--txt);text-decoration:none}.card:hover{border-color:var(--accent);transform:translateY(-2px)}.tag{color:var(--accent);font-size:.85rem}footer{text-align:center;color:var(--muted);padding:25px}</style></head>
-<body><main><p class="tag">PASS JUKEN ACADEMY · HIGH SCHOOL SCIENCE</p><h1>総合理科</h1><p class="muted">高校理科の4科目をここから選ぼう。生物・化学・物理・地学の学習メニュー、重要事項、演習へ進めます。</p><section class="grid">
-<a class="card" href="biology.html"><span class="tag">BIOLOGY</span><h2>生物・生物基礎</h2><p>細胞・遺伝情報・体内環境・生態・進化など</p></a>
-<a class="card" href="chemistry/"><span class="tag">CHEMISTRY</span><h2>化学・化学基礎</h2><p>物質の構成・物質量・反応・無機・有機など</p></a>
-<a class="card" href="physics/"><span class="tag">PHYSICS</span><h2>物理・物理基礎</h2><p>力学・波・熱・電気・磁気など</p></a>
-<a class="card" href="earth-science/"><span class="tag">EARTH SCIENCE</span><h2>地学・地学基礎</h2><p>地球・岩石・大気・海洋・宇宙など</p></a>
-</section><p class="muted">※各科目の学習機能は、科目カードから利用できます。</p></main><footer>PASS JUKEN ACADEMY · 総合理科</footer></body></html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="高校理科4科目を学べる総合理科サイト。生物・化学・物理・地学の重要事項と問題演習。">
+<title>総合理科｜PASS JUKEN ACADEMY</title>
+<style>
+:root{color-scheme:dark;--bg:#071426;--panel:#10233d;--line:#294563;--text:#edf5ff;--muted:#c3d5e9;--accent:#7bdcff;--accent2:#a9f0d1}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 85% 0%,#173d63 0,transparent 38%),linear-gradient(160deg,#071426,#0a1b30 60%,#071426);color:var(--text);font:16px/1.7 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{width:min(1080px,100%);margin:auto;padding:28px 20px 52px}
+header{padding:24px 0 26px}
+.eyebrow{color:var(--accent);font-weight:800;font-size:.82rem;letter-spacing:.13em}
+h1{font-size:clamp(2.5rem,8vw,4.7rem);line-height:1.06;letter-spacing:-.04em;margin:12px 0 18px}
+.lead{font-size:clamp(1rem,2.5vw,1.2rem);color:var(--muted);max-width:720px;margin:0}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.pill{border:1px solid var(--line);background:#0b2037;border-radius:999px;padding:6px 12px;color:var(--muted);font-size:.9rem}
+h2.section-title{font-size:1.5rem;margin:26px 0 6px}
+.section-desc{color:var(--muted);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{position:relative;display:flex;flex-direction:column;min-height:220px;padding:22px;background:linear-gradient(145deg,rgba(20,46,76,.98),rgba(11,29,50,.98));border:1px solid var(--line);border-radius:20px;color:var(--text);text-decoration:none;transition:transform .15s,border-color .15s}
+.card:hover,.card:focus-visible{transform:translateY(-3px);border-color:var(--accent);outline:none}
+.card:focus-visible{box-shadow:0 0 0 3px #7bdcff55}
+.card-top{display:flex;align-items:center;gap:12px}
+.icon{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:#1b3b5c;font-size:1.5rem}
+.label{font-size:.78rem;letter-spacing:.1em;font-weight:800;color:var(--accent)}
+.card h3{font-size:1.35rem;margin:16px 0 6px}
+.card p{color:var(--muted);margin:0 0 18px}
+.go{margin-top:auto;color:var(--accent2);font-weight:800}
+.bottom{margin-top:22px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:#091a2e}
+.bottom strong{display:block;margin-bottom:4px}.bottom p{margin:0;color:var(--muted)}
+footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+@media(max-width:620px){main{padding:18px 14px 36px}.grid{grid-template-columns:1fr}.card{min-height:190px;padding:19px}header{padding-top:18px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<p class="eyebrow">PASS JUKEN ACADEMY · HIGH SCHOOL SCIENCE</p>
+<h1>総合理科<span style="color:var(--accent)">.</span></h1>
+<p class="lead">高校理科の学習を、ここから。学びたい科目を選んで重要事項を確認し、問題演習で理解を深めよう。</p>
+<div class="stats"><span class="pill">高校生向け</span><span class="pill">4科目をまとめて学習</span><span class="pill">復習 ＋ 演習</span></div>
+</header>
+<section aria-labelledby="subjects">
+<h2 class="section-title" id="subjects">科目を選ぶ</h2>
+<p class="section-desc">学習したい科目のカードをタップしてください。</p>
+<div class="grid">
+<a class="card" href="./biology.html">
+<div class="card-top"><span class="icon" aria-hidden="true">🧬</span><span class="label">BIOLOGY</span></div>
+<h3>生物・生物基礎</h3><p>細胞・遺伝情報・体内環境・生態系・進化などを学ぼう。</p><span class="go">生物の学習へ →</span>
+</a>
+<a class="card" href="./chemistry/">
+<div class="card-top"><span class="icon" aria-hidden="true">⚗️</span><span class="label">CHEMISTRY</span></div>
+<h3>化学・化学基礎</h3><p>物質の構成・物質量・化学反応・無機物質・有機化合物など。</p><span class="go">化学の学習へ →</span>
+</a>
+<a class="card" href="./physics/">
+<div class="card-top"><span class="icon" aria-hidden="true">⚙️</span><span class="label">PHYSICS</span></div>
+<h3>物理・物理基礎</h3><p>力学・波・熱・電気・磁気などのしくみを理解しよう。</p><span class="go">物理の学習へ →</span>
+</a>
+<a class="card" href="./earth-science/">
+<div class="card-top"><span class="icon" aria-hidden="true">🌏</span><span class="label">EARTH SCIENCE</span></div>
+<h3>地学・地学基礎</h3><p>地球・岩石・大気・海洋・天体などを整理しよう。</p><span class="go">地学の学習へ →</span>
+</a>
+</div>
+</section>
+<section class="bottom" aria-label="おすすめの学習手順">
+<strong>おすすめの進め方</strong>
+<p>① 科目を選ぶ → ② 重要事項を復習 → ③ 問題演習 → ④ 間違えたところをもう一度確認</p>
+</section>
+<footer>PASS JUKEN ACADEMY · 総合理科</footer>
+</main>
+</body>
+</html>

@@ -32,5 +32,23 @@ const answer=0;const explanation="高温などで立体構造が変化すると�
 <script>(()=>{const d={cell:"<h3>細胞</h3><p>核はDNAを含む。ミトコンドリアは細胞呼吸とATP産生、葉緑体は光合成、リボソームはタンパク質合成に関わる。植物細胞と動物細胞の共通点・相違点を整理しよう。</p>",metabolism:"<h3>代謝・酵素</h3><p>同化は合成、異化は分解。ATPはエネルギーの受け渡しに関わる。酵素実験では温度・pH・基質濃度など、変えた条件と対照群を区別する。</p>",gene:"<h3>DNA・遺伝子発現</h3><p>DNAの塩基対はA-T、G-C。転写でRNAがつくられ、翻訳でアミノ酸配列につながる。DNA、mRNA、タンパク質の情報を混同しない。</p>",homeostasis:"<h3>体内環境</h3><p>恒常性（ホメオスタシス）は体内環境を一定範囲に保つ仕組み。インスリンは血糖濃度を下げる方向、グルカゴンは上げる方向に働く。</p>",ecology:"<h3>生態系</h3><p>生産者は有機物をつくり、消費者は他の生物などを食べ、分解者は有機物を分解する。グラフは軸・単位・期間を確認してから比較する。</p>",evolution:"<h3>進化</h3><p>自然選択では、環境下で繁殖に有利な遺伝的特徴が集団内で広がりやすい。個体が必要に応じて意図的に進化するわけではない。系統樹は共通祖先と分岐関係を示す。</p>"};const s=document.getElementById("bio-unit"),b=document.getElementById("bio-guide-content");function show(){b.innerHTML=d[s.value]}s.addEventListener("change",show);show()})();</script>
 
 <style id="unified-dark-theme">:root{color-scheme:dark}html,body{background:#071426!important;color:#edf5ff!important}body{background-image:radial-gradient(ellipse at top right,#14345a 0,transparent 48%)!important}main,section,article,.card,.panel,.container,.content,.box,fieldset,details{color:#edf5ff}.card,.panel,.box,article,fieldset,details,#unified-study-cards .study-card{background:#10233d!important;border:1px solid #294563!important;border-radius:16px!important;box-shadow:0 8px 24px #0003}p,li,small,.muted,.description{color:#c3d5e9}h1,h2,h3,h4,strong{color:#f3f8ff}a{color:#7bdcff}button,input,select,textarea{font:inherit;border-radius:10px}button{background:#17658b!important;color:#fff!important;border:1px solid #438bb0!important;padding:.65rem 1rem;cursor:pointer}input,select,textarea{background:#091a2e!important;color:#f3f8ff!important;border:1px solid #355575!important;padding:.65rem}hr{border-color:#294563}#unified-study-cards{background:transparent!important;color:#edf5ff!important;padding:24px 0}</style></body></html>
-<style id="mobile-tap-guard">html,body{touch-action:pan-y}button,a,[role="button"],[data-tab],[data-mode],[data-start],[data-weak],[data-export]{pointer-events:auto!important;touch-action:manipulation;position:relative}button:disabled{pointer-events:none}</style>
-<script id="mobile-tap-guard-script">(()=>{document.addEventListener('click',function(e){const b=e.target&&e.target.closest&&e.target.closest('button,[role="button"],[data-tab],[data-mode],[data-start],[data-weak],[data-export]');if(!b)return;const root=b.closest('.academy-hub,#unified-study-cards');if(!root)return;if(b.dataset.tab!==undefined){const i=Number(b.dataset.tab);root.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));const panels=root.querySelectorAll('[data-panel]');panels.forEach((p,n)=>p.classList.toggle('active',n===i));}},{capture:true});document.addEventListener('touchend',function(e){const b=e.target&&e.target.closest&&e.target.closest('button');if(!b||b.disabled)return;const root=b.closest('.academy-hub,#unified-study-cards');if(root&&b.dataset.tab!==undefined){e.preventDefault();b.click()}},{passive:false,capture:true});})();</script>
+<style id="mobile-tap-guard">html,body{touch-action:pan-y}
+button,a,[role="button"],input,select,textarea{touch-action:manipulation}
+button:disabled{cursor:not-allowed}</style>
+<script id="mobile-tap-guard-script">
+/* Shared mobile interaction compatibility layer.
+   Do not cancel touchend or synthesize clicks: native click events must reach
+   each subject's existing button handlers exactly once. */
+(function () {
+  if (window.__passJukenTapLayerReady) return;
+  window.__passJukenTapLayerReady = true;
+
+  document.addEventListener('click', function (event) {
+    const control = event.target && event.target.closest
+      ? event.target.closest('button, [role="button"], a, input, select, textarea')
+      : null;
+    if (!control || control.disabled || control.getAttribute('aria-disabled') === 'true') return;
+    /* Keep this listener observational only. Subject scripts own behavior. */
+  }, { capture: true, passive: true });
+})();
+</script>

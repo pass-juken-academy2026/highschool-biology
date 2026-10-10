@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="物理基礎・物理の科目と範囲を選び、公式確認や問題演習ができる高校物理学習サイト。">
+<title>高校物理｜学習メニュー</title>
+<style>
+:root{color-scheme:dark;--bg:#071426;--panel:#10233d;--line:#294563;--txt:#edf5ff;--muted:#c3d5e9;--accent:#7bdcff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#14345a 0,transparent 48%),var(--bg);color:var(--txt);font:16px/1.65 system-ui,-apple-system,sans-serif}main{max-width:900px;margin:auto;padding:22px}h1{font-size:clamp(2rem,7vw,3.1rem);line-height:1.2;margin:.3em 0}.muted{color:var(--muted)}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;margin:18px 0}.grid,.units,.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.subject,.unit,.mode{display:flex;gap:10px;align-items:flex-start;padding:13px;border-radius:12px;background:#091a2e;border:1px solid #294563;cursor:pointer}.subject{align-items:center;font-weight:800}.subject input,.unit input{width:20px;height:20px;accent-color:var(--accent);flex-shrink:0}.unit input{margin-top:4px}.mode{display:block}.mode input{accent-color:var(--accent)}.mode strong{display:block;margin:4px 0}.mode span{font-size:.92rem;color:var(--muted)}button{font:inherit;font-weight:800;border-radius:10px;padding:13px 18px;border:1px solid #438bb0;background:#17658b;color:#fff;cursor:pointer;min-height:48px;width:100%}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button:hover{filter:brightness(1.12)}.error{color:#ffd0c8;min-height:1.6em}.pill{display:inline-block;padding:4px 10px;border-radius:99px;background:#203c5d;color:#c9eaff;font-size:.85rem}@media(max-width:560px){main{padding:13px}.panel{padding:15px}.grid,.units,.modes{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<p class="muted">PASS JUKEN ACADEMY · 高校理科</p>
+<h1>高校物理 学習メニュー</h1>
+<p class="muted">①「物理基礎」か「物理」を選ぶ → ②学習範囲を選ぶ → ③学習方法を選んで始める。複数の範囲を選択できます。</p>
+<section class="panel"><h2>① 科目を選択</h2><p class="muted">まずは学習する科目を選んでください。</p><div class="grid" id="subjects">
+<label class="subject"><input type="radio" name="subject" value="基礎">物理基礎</label>
+<label class="subject"><input type="radio" name="subject" value="物理">物理</label>
+</div></section>
+<section class="panel"><h2>② 学習範囲を選択</h2><p class="muted">選んだ科目に対応する範囲が表示されます。複数選択OK。</p><div id="units" class="units"><p class="muted">先に「物理基礎」か「物理」を選んでください。</p></div><p><button type="button" id="selectAll" hidden>表示中の範囲をすべて選択</button></p></section>
+<section class="panel"><h2>③ 学習方法を選択</h2><div class="modes">
+<label class="mode"><input type="radio" name="mode" value="formula" checked><strong>1. 公式・覚え方を見る</strong><span>公式の意味・条件・例を確認。問題は出しません。</span></label>
+<label class="mode"><input type="radio" name="mode" value="shortcut"><strong>A. 公式の使い分け</strong><span>式を選ぶポイントと注意点を確認。</span></label>
+<label class="mode"><input type="radio" name="mode" value="basic"><strong>2. 基本問題</strong><span>基礎事項を使う問題を解く。</span></label>
+<label class="mode"><input type="radio" name="mode" value="truefalse"><strong>B. 公式の正誤問題</strong><span>正誤を判断し、成立条件を確認。</span></label>
+<label class="mode"><input type="radio" name="mode" value="common"><strong>C. 共通テスト型演習</strong><span>文章・実験・グラフを読み取る。</span></label>
+<label class="mode"><input type="radio" name="mode" value="mock"><strong>模擬テスト・弱点分析</strong><span>解答結果から復習ポイントを確認。</span></label>
+</div><p><button id="start" type="button">選んだ範囲で始める</button></p><p id="error" class="error" role="status" aria-live="polite"></p></section>
+</main>
+<script>
+const curriculum={
+"基礎":[["物理量・単位","quantities"],["運動の表し方","motion"],["力と運動","forces"],["仕事とエネルギー","energy"],["熱とエネルギー","heat"],["波","waves"],["電気","electricity"],["物理学と社会","science"] ],
+"物理":[["平面運動・相対運動","motion2"],["運動の法則","forces"],["剛体のつり合い","rigid"],["仕事と力学的エネルギー","energy"],["運動量と衝突","momentum"],["円運動・単振動","oscillation"],["万有引力","gravity"],["熱力学","thermo"],["波の性質・音","waves"],["光","optics"],["電場・電位","electricfield"],["電流と回路","electricity"],["磁場・電磁誘導","magnetism"],["交流","ac"],["原子・量子","atomic"]]
+};
+const units=document.getElementById("units"),allButton=document.getElementById("selectAll");
+function renderUnits(){const s=document.querySelector('input[name="subject"]:checked')?.value;units.innerHTML="";if(!s){units.innerHTML='<p class="muted">先に「物理基礎」か「物理」を選んでください。</p>';allButton.hidden=true;return}
+curriculum[s].forEach(([label,value])=>{const l=document.createElement("label");l.className="unit";const i=document.createElement("input");i.type="checkbox";i.name="unit";i.value=value;const span=document.createElement("span");span.textContent=label;l.append(i,span);units.append(l)});allButton.hidden=false}
+document.querySelectorAll('input[name="subject"]').forEach(x=>x.addEventListener("change",renderUnits));
+allButton.addEventListener("click",()=>{document.querySelectorAll('input[name="unit"]').forEach(x=>x.checked=true)});
+document.getElementById("start").addEventListener("click",()=>{const subject=document.querySelector('input[name="subject"]:checked')?.value;const selected=[...document.querySelectorAll('input[name="unit"]:checked')].map(x=>x.value);const mode=document.querySelector('input[name="mode"]:checked')?.value||"formula";const err=document.getElementById("error");if(!subject){err.textContent="先に「物理基礎」か「物理」を選んでください。";return}if(!selected.length){err.textContent="学習範囲を1つ以上選んでください。";return}const p=new URLSearchParams({subject,units:selected.join(","),mode});location.href=(mode==="formula"||mode==="shortcut"?"./formulas.html?":"./practice.html?")+p.toString()});
+</script></body></html>

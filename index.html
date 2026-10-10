@@ -12,8 +12,22 @@
 @media(max-width:620px){main{padding:12px 11px 34px}.subjects,.grid,.menus,.units{grid-template-columns:1fr}.subject{min-height:80px}.panel{margin:11px 0}.row>*{flex-basis:100%}.metrics{grid-template-columns:1fr 1fr 1fr}.menu-card{min-height:88px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
-<style id="responsive-layout-polish">/* Responsive layout and touch-target polish; learning data unchanged. */*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:5rem}body{max-width:100%;overflow-wrap:anywhere}img,svg,canvas,video{max-width:100%;height:auto}button,input,select,textarea{font:inherit;max-width:100%;min-width:0}button,a,[role="button"]{touch-action:manipulation}button{min-height:42px}:where(button,a,input,select,textarea,[role="button"],[tabindex]):focus-visible{outline:3px solid #65c9f1;outline-offset:3px}@media(max-width:640px){body{font-size:16px;line-height:1.65}header,main{padding-left:max(16px,env(safe-area-inset-left))!important;padding-right:max(16px,env(safe-area-inset-right))!important}h1{font-size:clamp(1.55rem,7vw,2.25rem)!important;line-height:1.2}h2{font-size:clamp(1.15rem,5vw,1.45rem)}.grid,.cards,.subject-grid,.subjects,.menu-grid,.topic-grid,.cards-grid,.dashboard,.two-col,.three-col{grid-template-columns:minmax(0,1fr)!important}.card,.panel,.topic-card,.menu-card{min-width:0;overflow-wrap:anywhere}button{min-height:44px}.choices button{width:100%;text-align:left;white-space:normal}table{display:block;max-width:100%;overflow-x:auto}pre,code{overflow-wrap:anywhere;white-space:pre-wrap}input,select,textarea{font-size:16px}}</style></head>
-<body><main>
+<style id="responsive-layout-polish">/* Responsive layout and touch-target polish; learning data unchanged. */*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:5rem}body{max-width:100%;overflow-wrap:anywhere}img,svg,canvas,video{max-width:100%;height:auto}button,input,select,textarea{font:inherit;max-width:100%;min-width:0}button,a,[role="button"]{touch-action:manipulation}button{min-height:42px}:where(button,a,input,select,textarea,[role="button"],[tabindex]):focus-visible{outline:3px solid #65c9f1;outline-offset:3px}@media(max-width:640px){body{font-size:16px;line-height:1.65}header,main{padding-left:max(16px,env(safe-area-inset-left))!important;padding-right:max(16px,env(safe-area-inset-right))!important}h1{font-size:clamp(1.55rem,7vw,2.25rem)!important;line-height:1.2}h2{font-size:clamp(1.15rem,5vw,1.45rem)}.grid,.cards,.subject-grid,.subjects,.menu-grid,.topic-grid,.cards-grid,.dashboard,.two-col,.three-col{grid-template-columns:minmax(0,1fr)!important}.card,.panel,.topic-card,.menu-card{min-width:0;overflow-wrap:anywhere}button{min-height:44px}.choices button{width:100%;text-align:left;white-space:normal}table{display:block;max-width:100%;overflow-x:auto}pre,code{overflow-wrap:anywhere;white-space:pre-wrap}input,select,textarea{font-size:16px}}</style><style id="subject-wide-search-style">
+#subject-wide-search{position:sticky;top:0;z-index:9998;padding:10px 14px;background:rgba(7,20,38,.97);border-bottom:1px solid #355575;color:#edf5ff;box-shadow:0 4px 14px #0003}
+#subject-wide-search .sws-inner{max-width:1080px;margin:auto}
+#subject-wide-search summary{cursor:pointer;font-weight:750;padding:3px 0}
+#subject-wide-search .sws-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+#subject-wide-search input{flex:1;min-width:180px;width:100%;font:inherit;padding:10px 12px;border:1px solid #5581a5;border-radius:9px;background:#091a2e;color:#f3f8ff}
+#subject-wide-search button{font:inherit;min-height:42px;padding:8px 13px;border:1px solid #438bb0;border-radius:9px;background:#17658b;color:#fff;cursor:pointer}
+#subject-wide-search .sws-meta{margin:7px 0;color:#c3d5e9;font-size:.9rem}
+#subject-wide-search .sws-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:8px;max-height:38vh;overflow:auto}
+#subject-wide-search .sws-result{display:block;width:100%;text-align:left;white-space:normal;background:#10233d;border:1px solid #355575;border-radius:9px;padding:10px;color:#edf5ff}
+#subject-wide-search .sws-result strong{display:block;margin-bottom:3px}
+#subject-wide-search .sws-result span{display:block;color:#c3d5e9;font-size:.88rem;font-weight:400}
+#subject-wide-search [hidden]{display:none!important}
+@media(max-width:600px){#subject-wide-search{padding:8px 10px}#subject-wide-search .sws-controls{align-items:stretch}#subject-wide-search input{min-width:0;flex-basis:100%;font-size:16px}#subject-wide-search .sws-results{max-height:32vh}}
+</style></head>
+<body><section id="subject-wide-search" aria-label="科目内横断検索"><div class="sws-inner"><details><summary>🔎 ページ内を横断検索（単元・用語・解説・問題）</summary><div class="sws-controls"><input id="sws-query" type="search" placeholder="例：重要語句・公式・人物名・単元名" autocomplete="off" aria-label="ページ内検索語"><button id="sws-reset" type="button">リセット</button></div><p id="sws-meta" class="sws-meta" aria-live="polite">検索語を入力すると、このページに表示されている学習項目を検索します。</p><div id="sws-results" class="sws-results"></div></details></div></section><main>
 <header><p class="eyebrow">PASS JUKEN ACADEMY · SCIENCE</p><h1>高校理科</h1><p class="muted">知識を整理し、問題で確かめ、間違いを次の得点につなげよう。</p><div class="row"><span class="pill">4科目＋理科基礎</span><span class="pill">基礎・発展</span><span class="pill">復習・学習記録</span></div><div class="knowledge-search" style="margin-top:18px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:14px"><label for="knowledgeSearch" style="font-weight:700;display:block;margin-bottom:6px">用語・関連語から検索</label><div class="row"><input id="knowledgeSearch" type="search" placeholder="例：ATP、エネルギー、DNA、半減期" style="flex:1;min-width:0"><button type="button" class="btn" id="knowledgeSearchButton">検索</button></div><div id="knowledgeSearchResults" aria-live="polite" style="margin-top:10px"></div></div></header>
 <section id="screen-subject" class="panel"><h2>① 科目を選ぶ</h2><p class="muted">学びたい科目をタップしてください。</p><div id="subjectGrid" class="grid subjects"></div><p class="small muted">科目を選ぶと、その科目の落ち着いたモチーフカラーに切り替わります。</p></section>
 <section id="screen-level" class="panel hidden"><div class="topline"><h2>② 学習レベル</h2><button class="btn secondary" data-back="subject">← 科目選択</button></div><p id="levelSubtitle" class="muted"></p><div class="grid"><button class="level" data-level="basic"><span class="big">📘</span><strong>基礎</strong><small>重要語句・基本公式・基本問題を固める</small></button><button class="level" data-level="advanced"><span class="big">🧠</span><strong>発展</strong><small>応用計算・資料考察・複合問題に挑戦</small></button></div></section>
@@ -139,4 +153,62 @@ $("fillAnswer").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()}
 $("knowledgeSearchButton").addEventListener("click",searchKnowledge);$("knowledgeSearch").addEventListener("input",searchKnowledge);renderSubjects();theme();
 })();
 </script>
-</body></html>
+<script id="subject-wide-search-script">
+(()=> {
+ const panel=document.getElementById('subject-wide-search');
+ const input=document.getElementById('sws-query');
+ const reset=document.getElementById('sws-reset');
+ const meta=document.getElementById('sws-meta');
+ const results=document.getElementById('sws-results');
+ if(!panel||!input||!reset||!meta||!results)return;
+ const selector='article,.entry,.question,.formula,.formula-card,.formula-item,.term,.word-card,.knowledge-item,.concept,.event,.timeline-item,.history-card,.topic-card,.topic,.topiclist,.knowledge-card,.term-card,.result-item,.resultrow,.data-result,.item,.unit,.card,.menu-card,tr,li';
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ let matches=[];
+ function textOf(el){return (el.innerText||el.textContent||'').replace(/\s+/g,' ').trim()}
+ function indexItems(){
+   const nodes=Array.from(document.querySelectorAll(selector)).filter(el=>!panel.contains(el));
+   return nodes.filter(el=>{
+     const text=textOf(el);
+     if(text.length<8||text.length>1800)return false;
+     let parent=el.parentElement;
+     while(parent&&!panel.contains(parent)){
+       if(parent.matches&&parent.matches(selector)){
+         const parentText=textOf(parent);
+         if(parentText.length>=8&&parentText.length<=1800)return false;
+       }
+       parent=parent.parentElement;
+     }
+     return true;
+   }).map((el,i)=>({el,text:textOf(el),i}));
+ }
+ function render(){
+   const q=input.value.trim().toLocaleLowerCase();
+   results.innerHTML='';
+   matches=[];
+   if(!q){meta.textContent='検索語を入力すると、このページに表示されている学習項目を検索します。';return;}
+   const terms=q.split(/\s+/).filter(Boolean);
+   matches=indexItems().filter(item=>terms.every(t=>item.text.toLocaleLowerCase().includes(t))).slice(0,80);
+   meta.textContent=matches.length+'件表示'+(matches.length===80?'（最大80件）':'')+'。元の単元・問題機能はそのまま使えます。';
+   if(!matches.length){results.innerHTML='<p>該当する項目がありません。別の語句で検索するか、リセットしてください。</p>';return;}
+   results.innerHTML=matches.map((item,i)=>{
+     const title=(item.el.querySelector('h1,h2,h3,h4,strong,b,.title,.name')||item.el).innerText||item.text;
+     const clean=title.replace(/\s+/g,' ').trim();
+     const snippet=item.text.length>230?item.text.slice(0,230)+'…':item.text;
+     return '<button type="button" class="sws-result" data-sws-index="'+i+'"><strong>'+esc(clean.slice(0,100))+'</strong><span>'+esc(snippet)+'</span></button>';
+   }).join('');
+ }
+ input.addEventListener('input',render);
+ reset.addEventListener('click',()=>{input.value='';render();input.focus();});
+ results.addEventListener('click',event=>{
+   const button=event.target.closest('[data-sws-index]');
+   if(!button)return;
+   const item=matches[Number(button.dataset.swsIndex)];
+   if(!item)return;
+   item.el.scrollIntoView({behavior:'smooth',block:'center'});
+   const old=item.el.style.outline;
+   item.el.style.outline='3px solid #65c9f1';
+   item.el.style.outlineOffset='4px';
+   setTimeout(()=>{item.el.style.outline=old;item.el.style.outlineOffset='';},1600);
+ });
+})();
+</script></body></html>

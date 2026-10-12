@@ -51,3 +51,44 @@ jobs:
               print(f'Checked {f}: {len(a.scripts)} inline script(s), {len(a.ids)} IDs')
           if failed: sys.exit(1)
           PY
+
+      - name: Check Stage 2 science coverage and answer data
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, sys
+          files = {
+              'biology': Path('practice.html').read_text(encoding='utf-8'),
+              'chemistry': Path('chemistry/practice.html').read_text(encoding='utf-8'),
+              'physics': Path('physics/practice.html').read_text(encoding='utf-8'),
+              'earth science': Path('earth-science/practice.html').read_text(encoding='utf-8'),
+          }
+          required = {
+              'biology': ['【実験考察】', '【遺伝】', '対照実験', 'const TRUE_FALSE'],
+              'chemistry': ['【化学反応式】', '【モル計算】', '【計算過程】', 'const TRUE_FALSE'],
+              'physics': ['【力・運動】', '【計算過程】', '【仕事】', 'const TRUE_FALSE'],
+              'earth science': ['【天体】', '【地層・資料読解】', '【気象資料】', 'const TRUE_FALSE'],
+          }
+          errors = []
+          total = 0
+          record_re = re.compile(r'\["([^"]+)","([^"]*)",\[([^\]]*)\],(\d+),"([^"]*)"\]')
+          for name, source in files.items():
+              for marker in required[name]:
+                  if marker not in source:
+                      errors.append(f'{name}: missing {marker}')
+              records = record_re.findall(source)
+              if not records:
+                  errors.append(f'{name}: no question records found')
+              for n, (_, question, raw_choices, raw_answer, explanation) in enumerate(records, 1):
+                  choices = re.findall(r'"([^"]*)"', raw_choices)
+                  answer = int(raw_answer)
+                  if len(choices) < 2 or answer >= len(choices) or not explanation.strip():
+                      errors.append(f'{name} question {n}: invalid choices/answer/explanation')
+              total += len(records)
+          if errors:
+              print('Stage 2 science validation errors:')
+              print('\n'.join(errors))
+              sys.exit(1)
+          print(f'Stage 2 science coverage OK; validated {total} question and true-false records')
+          PY

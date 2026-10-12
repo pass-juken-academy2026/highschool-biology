@@ -51,9 +51,29 @@ footer{border-color:#355575!important;color:#c3d5e9!important}
 #knowledgeSearchResults .entry{background:#091a2e!important;color:#f3f8ff!important}
 #knowledgeSearchResults p,#studyContent p,#studyContent strong{color:inherit}
 @media(max-width:620px){.panel{padding:15px!important}}
+</style><style id="science-legibility-final">
+html,body{background:#071426!important;color:#f3f8ff!important}
+body{background-image:radial-gradient(ellipse at top right,#14345a 0,transparent 48%)!important}
+header,main,main *{color:#f3f8ff}
+main .muted,main .small,main .status,main .pill,main .subject small,main .level small,main .menu-card small,footer{color:#c3d5e9!important}
+main .panel,main .item,main .feedback,main .metric{background:#10233d!important;border-color:#355575!important;color:#f3f8ff!important}
+main .subject,main .level,main .menu-card,main .unit,main .choice,main .tile{background:#091a2e!important;color:#f3f8ff!important;border-color:#527393!important}
+main .subject strong,main .level strong,main .menu-card strong,main .unit strong,main .choice{color:#f3f8ff!important}
+main .subject.selected,main .level.selected,main .menu-card.selected,main .choice.selected{background:#173955!important;border-color:#7bdcff!important}
+main .menu-icon{background:#173955!important;color:#7bdcff!important}
+main button.btn{background:#17658b!important;border-color:#438bb0!important;color:#fff!important}
+main button.btn.secondary{background:#091a2e!important;border-color:#527393!important;color:#fff!important}
+main input,main select,main textarea{background:#091a2e!important;color:#fff!important;border-color:#527393!important}
+main input::placeholder{color:#c3d5e9!important}
+main th{background:#173955!important;color:#fff!important}
+main td{background:#091a2e!important;color:#fff!important;border-color:#355575!important}
+main .formula{color:#7bdcff!important}
+main .choice.correct{background:#123b32!important}main .choice.wrong{background:#401f2a!important}
+main .bar{background:#294563!important}main .bar span{background:#7bdcff!important}
+@media(max-width:620px){main .panel{padding:15px!important}}
 </style></head>
-<body><section id="subject-wide-search" aria-label="科目内横断検索"><div class="sws-inner"><details><summary>🔎 ページ内を横断検索（単元・用語・解説・問題）</summary><div class="sws-controls"><input id="sws-query" type="search" placeholder="例：重要語句・公式・人物名・単元名" autocomplete="off" aria-label="ページ内検索語"><button id="sws-reset" type="button">リセット</button></div><p id="sws-meta" class="sws-meta" aria-live="polite">検索語を入力すると、このページに表示されている学習項目を検索します。</p><div id="sws-results" class="sws-results"></div></details></div></section><main>
-<header><p class="eyebrow">PASS JUKEN ACADEMY · SCIENCE</p><h1>高校理科</h1><p class="muted">知識を整理し、問題で確かめ、間違いを次の得点につなげよう。</p><div class="row"><span class="pill">4科目＋理科基礎</span><span class="pill">基礎・発展</span><span class="pill">復習・学習記録</span></div><div class="knowledge-search" style="margin-top:18px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:14px"><label for="knowledgeSearch" style="font-weight:700;display:block;margin-bottom:6px">用語・関連語から検索</label><div class="row"><input id="knowledgeSearch" type="search" placeholder="例：ATP、エネルギー、DNA、半減期" style="flex:1;min-width:0"><button type="button" class="btn" id="knowledgeSearchButton">検索</button></div><div id="knowledgeSearchResults" aria-live="polite" style="margin-top:10px"></div></div></header>
+<body><main>
+<header><p class="eyebrow">PASS JUKEN ACADEMY · SCIENCE</p><h1>高校理科</h1><p class="muted">知識を整理し、問題で確かめ、間違いを次の得点につなげよう。</p><div class="row"><span class="pill">4科目＋理科基礎</span><span class="pill">基礎・発展</span><span class="pill">復習・学習記録</span></div></header>
 <section id="screen-subject" class="panel"><h2>① 科目を選ぶ</h2><p class="muted">学びたい科目をタップしてください。</p><div id="subjectGrid" class="grid subjects"></div><p class="small muted">科目を選ぶと、その科目の落ち着いたモチーフカラーに切り替わります。</p></section>
 <section id="screen-units" class="panel hidden"><div class="topline"><h2>② 単元を選ぶ</h2><button class="btn secondary" data-back="subject">← 科目選択</button></div><p class="muted">学習したい単元を選択。複数選択できます。</p><div class="row"><button class="btn secondary" id="selectAll">すべて選択</button><button class="btn secondary" id="clearUnits">選択解除</button></div><div id="unitGrid" class="units" style="margin-top:12px"></div><p id="unitError" class="status" role="status"></p><button class="btn" id="begin" style="width:100%">この単元でメニューへ進む</button></section>
 <section id="screen-level" class="panel hidden"><div class="topline"><h2>③ 学習レベル</h2><button class="btn secondary" data-back="units">← 単元選択</button></div><p id="levelSubtitle" class="muted"></p><div class="grid"><button class="level" data-level="basic"><span class="big">📘</span><strong>基礎</strong><small>重要語句・基本公式・基本問題を固める</small></button><button class="level" data-level="advanced"><span class="big">🧠</span><strong>発展</strong><small>応用計算・資料考察・複合問題に挑戦</small></button></div></section>
@@ -149,7 +169,7 @@ const state={subject:null,level:null,units:[],menu:null,questions:[],index:0,ans
 function readStore(k,f){try{const x=JSON.parse(localStorage.getItem(k)||"null");return x??f}catch(e){return f}}
 function saveStore(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function currentSubject(){return subjects.find(s=>s.id===state.subject)}
-function theme(){const s=currentSubject();const r=document.documentElement;if(!s){r.style.setProperty("--accent","#50765D");r.style.setProperty("--accent-soft","#E8EFE9");r.style.setProperty("--page","#F4F6F4");return}r.style.setProperty("--accent",s.color);r.style.setProperty("--accent-soft",s.soft);r.style.setProperty("--page",s.page);document.querySelector('meta[name="theme-color"]').content=s.page}
+function theme(){const r=document.documentElement;r.style.setProperty("--accent","#7bdcff");r.style.setProperty("--accent-soft","#173955");r.style.setProperty("--page","#071426");r.style.setProperty("--card","#10233d");r.style.setProperty("--ink","#f3f8ff");r.style.setProperty("--muted","#c3d5e9");const m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#071426"}r.style.setProperty("--accent",s.color);r.style.setProperty("--accent-soft",s.soft);r.style.setProperty("--page",s.page);document.querySelector('meta[name="theme-color"]').content=s.page}
 function show(name){const target=$("screen-"+name);if(!target){console.error("画面が見つかりません:",name);return}document.querySelectorAll("main>section[id^=screen-]").forEach(s=>s.classList.add("hidden"));target.classList.remove("hidden");requestAnimationFrame(()=>{const y=target.getBoundingClientRect().top+window.scrollY-72;window.scrollTo({top:Math.max(0,y),behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})})}
 function normalizeKnowledge(v){return String(v||"").normalize("NFKC").toLowerCase().replace(/[\s・･‐‑–—ー]/g,"")}
 const SCIENCE_ALIASES={"細胞呼吸":"ミトコンドリア ATP グルコース 酸化","光合成":"葉緑体 クロロフィル 二酸化炭素 酸素","DNA":"遺伝子 染色体 塩基配列 二重らせん","コドン":"mRNA 遺伝暗号 アミノ酸 翻訳","負のフィードバック":"恒常性 ホメオスタシス 体温 血糖量","生物濃縮":"食物連鎖 有害物質 高次消費者","相同器官":"進化 共通祖先 前肢","同位体":"原子番号 質量数 中性子","アボガドロ定数":"物質量 mol 6.02×10²³ 粒子数","両性酸化物":"アルミニウム 酸 塩基","エステル結合":"有機化合物 カルボン酸 アルコール","運動量":"質量 速度 力積 保存則","熱力学第一法則":"内部エネルギー 熱 仕事 エネルギー保存","干渉":"波 強め合う 弱め合う 経路差","電磁誘導":"磁束 変化 誘導起電力 ファラデー","半減期":"放射性崩壊 放射線 核種","プレート":"地殻 リソスフェア マントル プレート境界","震源":"震央 P波 S波 地震","コリオリの力":"転向力 偏西風 貿易風 地球自転","年周視差":"地球公転 恒星 距離 パーセク","示相化石":"環境 示準化石 地層","示準化石":"地質年代 示相化石 地層"};
@@ -207,45 +227,7 @@ $("favoritesContent").addEventListener("click",e=>{const b=e.target.closest(".re
 $("reviewContent").addEventListener("click",e=>{const r=e.target.closest(".review-remove");if(r){state.review.splice(Number(r.dataset.index),1);saveStore("scienceReview",state.review);renderReview();return}const b=e.target.closest(".review-one");if(b){const q=state.review[Number(b.dataset.index)];if(q){state.subject=q.subject||state.subject;state.level=q.level||state.level;theme();state.menu="four";startQuiz([{...q,type:q.choices?"four":"fill"}])}}});
 $("choices").addEventListener("click",e=>{const b=e.target.closest("[data-choice]");if(!b||state.locked)return;state.selected=Number(b.dataset.choice);document.querySelectorAll("[data-choice]").forEach(x=>x.classList.toggle("selected",x===b))});
 $("fillAnswer").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});
-$("knowledgeSearchButton").addEventListener("click",searchKnowledge);$("knowledgeSearch").addEventListener("input",searchKnowledge);renderSubjects();theme();
+renderSubjects();theme();
 })();
 </script>
-<script id="subject-wide-search-script">
-(()=> {
- const panel=document.getElementById('subject-wide-search'),input=document.getElementById('sws-query'),reset=document.getElementById('sws-reset'),meta=document.getElementById('sws-meta'),results=document.getElementById('sws-results');
- if(!panel||!input||!reset||!meta||!results)return;
- const selector='article,.entry,.question,.question-card,.formula,.formula-card,.formula-item,.term,.term-card,.word-card,.vocab-item,.vocabulary-item,.knowledge-item,.knowledge-card,.concept,.definition,.event,.timeline-item,.history-card,.topic-card,.topic,.topiclist,.entry-list,.knowledge-list,.lesson-item,.quiz-item,.practice-item,.result-item,.resultrow,.data-result,.item,.unit,.card,.menu-card,.subject,.work,.menu,.row,.tag,dt,dd,h2,h3,h4,tr,li';
- const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const textOf=el=>(el.innerText||el.textContent||'').replace(/\s+/g,' ').trim();
- let matches=[];
- function indexItems(){
-   const nodes=Array.from(document.querySelectorAll(selector)).filter(el=>{
-     if(panel.contains(el))return false;
-     if(typeof el.getClientRects==='function'&&el.getClientRects().length===0)return false;
-     const text=textOf(el);return text.length>=8&&text.length<=1800;
-   });
-   return nodes.filter(el=>{
-     let parent=el.parentElement;
-     while(parent&&!panel.contains(parent)){
-       if(parent.matches&&parent.matches(selector)&&(!parent.getClientRects||parent.getClientRects().length>0)){
-         const pt=textOf(parent);if(pt.length>=8&&pt.length<=1800)return false;
-       }
-       parent=parent.parentElement;
-     }
-     return true;
-   }).map((el,i)=>({el,text:textOf(el),i}));
- }
- function render(){
-   const q=input.value.trim().toLocaleLowerCase();results.innerHTML='';matches=[];
-   if(!q){meta.textContent='検索語を入力すると、現在表示されている学習項目を検索します。';return;}
-   const terms=q.split(/\s+/).filter(Boolean);
-   matches=indexItems().filter(item=>terms.every(term=>item.text.toLocaleLowerCase().includes(term))).slice(0,80);
-   meta.textContent=matches.length+'件表示'+(matches.length===80?'（最大80件）':'')+'。結果を選ぶと該当箇所へ移動します。';
-   if(!matches.length){results.innerHTML='<p>該当する項目がありません。別の語句で検索するか、リセットしてください。</p>';return;}
-   results.innerHTML=matches.map((item,i)=>{const h=item.el.querySelector('h1,h2,h3,h4,strong,b,.title,.name');const title=h?textOf(h):item.text;const snippet=item.text.length>230?item.text.slice(0,230)+'…':item.text;return '<button type="button" class="sws-result" data-sws-index="'+i+'"><strong>'+esc(title.slice(0,100))+'</strong><span>'+esc(snippet)+'</span></button>';}).join('');
- }
- input.addEventListener('input',render);
- reset.addEventListener('click',()=>{input.value='';render();input.focus();});
- results.addEventListener('click',event=>{const b=event.target.closest('[data-sws-index]');if(!b)return;const item=matches[Number(b.dataset.swsIndex)];if(!item)return;item.el.scrollIntoView({behavior:'smooth',block:'center'});const old=item.el.style.outline,offset=item.el.style.outlineOffset;item.el.style.outline='3px solid #65c9f1';item.el.style.outlineOffset='4px';setTimeout(()=>{item.el.style.outline=old;item.el.style.outlineOffset=offset;},1600);});
-})();
-</script></body></html>
+</body></html>

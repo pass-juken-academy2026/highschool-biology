@@ -92,3 +92,5 @@ jobs:
               sys.exit(1)
           print(f'Stage 2 science coverage OK; validated {total} question and true-false records')
           PY
+      - name: Check common-test stimulus continuity and answer data
+        run: node tests/common-test-audit.cjs

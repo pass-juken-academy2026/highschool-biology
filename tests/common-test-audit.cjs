@@ -11,11 +11,11 @@ function extractArray(source, marker) {
     const ch = source[i];
     if (quote) {
       if (escaped) escaped = false;
-      else if (ch === '\\\\') escaped = true;
+      else if (ch === '\\') escaped = true;
       else if (ch === quote) quote = '';
       continue;
     }
-    if (ch === '"' || ch === "'" || ch === '`') { quote = ch; continue; }
+    if (ch === '"') { quote = ch; continue; }
     if (ch === '[') depth++;
     else if (ch === ']') {
       depth--;
@@ -51,7 +51,7 @@ for (const [name, file] of files) {
     if (!Number.isInteger(q[3]) || q[3] < 0 || q[3] > 3) errors.push(label + ': invalid answer index');
     if (typeof q[4] !== 'string' || !q[4].trim()) errors.push(label + ': missing explanation');
     if (typeof q[5] !== 'string' || !q[5].trim()) errors.push(label + ': missing shared stimulus');
-    const prompt = String(q[1] || '').normalize('NFKC').toLocaleLowerCase().replace(/\\s+/g, '');
+    const prompt = String(q[1] || '').normalize('NFKC').toLocaleLowerCase().replace(/\s+/g, '');
     if (prompt && seenPrompts.has(prompt)) errors.push(label + ': duplicate question prompt');
     seenPrompts.add(prompt);
     const stimulus = String(q[5] || '');
@@ -64,12 +64,12 @@ for (const [name, file] of files) {
   }
   if (groupSizes.size !== 5) errors.push(name + ': expected 5 connected large-question stimuli, found ' + groupSizes.size);
   for (const [stimulus, count] of groupSizes) {
-    if (count < 4 || count > 6) errors.push(name + ': each large question should contain 4–6 linked subquestions; found ' + count + ' for ' + stimulus.split('\\n')[0]);
+    if (count < 4 || count > 6) errors.push(name + ': each large question should contain 4–6 linked subquestions; found ' + count + ' for ' + stimulus.split('\n')[0]);
   }
   console.log(name + ': ' + questions.length + ' questions, ' + groupSizes.size + ' connected large-question groups');
 }
 if (errors.length) {
-  console.error(errors.join('\\n'));
+  console.error(errors.join('\n'));
   process.exit(1);
 }
 console.log('Common-test question structure checks passed.');
